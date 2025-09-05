@@ -21,10 +21,10 @@ export interface TabsProps {
     theme?: MD3Theme
 }
 export type WidthTab = {
-    [Mode in ModeType]: number
+    [Mode in ModeType]?: number
 }
 export interface TabViewProps {
-    refScroll: RefObject<ScrollView>
+    refScroll: RefObject<ScrollView | null>
     children: ChildrenType
     onTabsPress?: (index: number) => void
     onLayoutTab: (props: { event: LayoutChangeEvent; index: number; mode: ModeType }) => void

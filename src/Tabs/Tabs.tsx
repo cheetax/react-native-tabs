@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { LayoutChangeEvent, ScrollView, View } from "react-native"
 import { useTheme } from "react-native-paper"
-import { ChildrenType, ModeType, TabsProps, TabViewProps, WidthTab } from "./TabsType"
+import type { ChildrenType, ModeType, TabsProps, TabViewProps, WidthTab } from "./TabsType"
 import { PADDING_POINTER } from "./Constants"
 import TabView from "./TabsView"
 import { needToScroll } from "./Function"
@@ -53,7 +53,7 @@ const Tabs = (props: TabsProps) => {
 
     useEffect(() => {
         setScrollable((needToScroll(widthViewTabs, widthTab.map(item => item[mode] || 0), (mode == 'primary' ? 12 : 0))))
-           
+
         setTabViewProps(props => {
             return {
                 ...props,

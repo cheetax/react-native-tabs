@@ -6,7 +6,8 @@
     "outDir": "./dist",
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "esnext",
+    "module": "es2022",
+    "moduleResolution": "node",
     "target": "es2020",
     //"types": [],
     // For nodejs:
@@ -14,7 +15,7 @@
       "esnext"
     ],
     "types": [
-      "node"
+      "node"      
     ],
     // and npm install -D @types/node
     // Other Outputs
