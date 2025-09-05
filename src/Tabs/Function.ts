@@ -1,17 +1,18 @@
 import { MAGRGIN_INDICATOR } from "./Constants"
-import { LeftPaddingProps } from "./TabsType"
+import type { LeftPaddingProps } from "./TabsType"
 
 export const leftPadding = (props: LeftPaddingProps): number => {
     const { scrollable, widthTab, selectItemTabs, widthViewTabs, mode, padding } = props
     const leftCorrect = mode == 'primary' ? MAGRGIN_INDICATOR : 0
     let left: number = padding + leftCorrect
-    if (widthTab.length > 1 && !scrollable) {
-        left = ((((widthViewTabs / widthTab.length) - (widthTab[selectItemTabs][mode]) + leftCorrect) / 2)
-            + (selectItemTabs * (widthViewTabs / widthTab.length)))
-    }
-    else if (widthTab.length > 1 && scrollable) {
-        left = (widthTab.slice(0, selectItemTabs).reduce((prev, cur) => prev + (cur[mode] - leftCorrect) + padding * 2, 0) + padding)
-    }
+    if (widthTab[selectItemTabs])
+        if (widthTab.length > 1 && !scrollable) {
+            left = ((((widthViewTabs / widthTab.length) - (widthTab[selectItemTabs][mode]) + leftCorrect) / 2)
+                + (selectItemTabs * (widthViewTabs / widthTab.length)))
+        }
+        else if (widthTab.length > 1 && scrollable) {
+            left = (widthTab.slice(0, selectItemTabs).reduce((prev, cur) => prev + (cur[mode] - leftCorrect) + padding * 2, 0) + padding)
+        }
     return left
 }
 export const needToScroll = (leng: number, lengElement: number[], padding: number) =>
