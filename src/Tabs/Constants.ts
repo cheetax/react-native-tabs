@@ -1,4 +1,4 @@
-import { WidthTab } from "./TabsType"
+import type { WidthTab } from "./TabsType"
 
 export const PADDING_POINTER: WidthTab = {
     'primary': 12,
