@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { LayoutChangeEvent, ScrollView, View } from "react-native"
 import { useTheme } from "react-native-paper"
-import type { ChildrenType, ModeType, TabsProps, TabViewProps, WidthTab } from "./TabsType"
+import type { ContentType, ModeType, TabsProps, TabViewProps, WidthTab } from "./TabsType"
 import TabView from "./TabsView"
 import { needToScroll } from "./Function"
 
@@ -12,7 +12,7 @@ const Tabs = (props: TabsProps) => {
     const _theme = useTheme()
     const { onTabPress, mode = 'primary', theme = _theme } = props
 
-    const [children] = useState<ChildrenType>(props.children)
+    const [content] = useState<ContentType>(props.content)
 
     const [widthViewTabs, setWidthViewTabs] = useState<number>(0)
     const [widthTab, setWidthTab] = useState<WidthTab[]>([{} as WidthTab])
@@ -22,7 +22,7 @@ const Tabs = (props: TabsProps) => {
 
     const [tabViewProps, setTabViewProps] = useState<TabViewProps>({
         ...props,
-        children,
+        content,
         refScroll: ref,
         selectItemTabs: selectItemTabs,
         widthTab: widthTab,

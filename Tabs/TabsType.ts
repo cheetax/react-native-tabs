@@ -7,15 +7,15 @@ export type ModeType = 'primary' | 'secondary';
 
 export type IconType = IconSource
 
-export type Childrens = {
+export type Contents = {
     icon: IconType
     name: string
 }
 
-export type ChildrenType = string[] | Childrens[]
+export type ContentType = string[] | Contents[]
 
 export interface TabsProps {
-    children: ChildrenType
+    content: ContentType
     onTabPress?: (index: number) => void
     mode?: ModeType
     theme?: MD3Theme
@@ -25,7 +25,7 @@ export type WidthTab = {
 }
 export interface TabViewProps {
     refScroll: RefObject<ScrollView | null>
-    children: ChildrenType
+    content: ContentType
     onTabsPress?: (index: number) => void
     onLayoutTab: (props: { event: LayoutChangeEvent; index: number; mode: ModeType }) => void
     selectItemTabs: number

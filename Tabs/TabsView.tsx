@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
-import { View, Animated } from "react-native"
+import { View} from "react-native"
 import { TouchableRipple, Text, Icon } from "react-native-paper"
 import { leftPadding } from "./Function"
 import { TabViewProps } from "./TabsType"
 import { HEIGHT, MAGRGIN_INDICATOR, PADDING_POINTER } from "./Constants"
+import Animated from "react-native-reanimated"
 
 type NameProps = {
     color: string
@@ -22,7 +23,7 @@ const TabView = (props: TabViewProps) => {
 
     const {
         refScroll,
-        children,
+        content,
         onTabsPress,
         onLayoutTab,
         selectItemTabs,
@@ -34,10 +35,10 @@ const TabView = (props: TabViewProps) => {
 
     const [left, setLeft] = useState<number>()
 
-    const [iconVisible] = useState<boolean>(typeof children !== 'string')
+    const [iconVisible] = useState<boolean>(typeof content !== 'string')
 
     useEffect(() => {
-        widthTab.length > 0 && setLeft(leftPadding({ ...props, mode, padding: PADDING_POINTER[mode]}))
+        (widthTab.length > 0 && PADDING_POINTER[mode]) && setLeft(leftPadding({ ...props, mode, padding: PADDING_POINTER[mode]}))
     }, [selectItemTabs, widthTab, widthViewTabs])
 
     useEffect(() => { (scrollable && refScroll && left != undefined) && refScroll.current?.scrollTo({ x: left * 0.5, animated: true }, 200) }, [left])
@@ -50,7 +51,7 @@ const TabView = (props: TabViewProps) => {
             display: 'flex'
         }}
     >
-        {left != undefined
+        {(left != undefined && widthTab[selectItemTabs][mode])
             && <Animated.View
                 style={{
                     position: 'absolute',
@@ -64,7 +65,7 @@ const TabView = (props: TabViewProps) => {
                     transitionDuration: '200ms'
                 }}
             />}
-        {children.map((element, index) => {
+        {content.map((element, index) => {
             //console.log(typeof element, element)
             const color = selectItemTabs === index
                 ? theme.colors.primary
@@ -72,7 +73,7 @@ const TabView = (props: TabViewProps) => {
             return <TouchableRipple
                 key={index}
                 style={{
-                    paddingHorizontal: (children.length == 1) ? 0 : 'auto',
+                    paddingHorizontal: (content.length == 1) ? 0 : 'auto',
                     alignItems: widthTab.length == 1 ? 'flex-start' : 'center',
                 }}
                 onLayout={(event) => onLayoutTab({ event, index, mode: 'secondary' })}
@@ -84,7 +85,7 @@ const TabView = (props: TabViewProps) => {
                         flexShrink: 0,
                         flexBasis: '100%',
                         marginHorizontal: scrollable || widthTab.length == 1 ? PADDING_POINTER['primary'] : PADDING_POINTER['secondary'],
-                        width: scrollable || widthTab.length == 1 ? 'auto' : widthViewTabs / children.length
+                        width: scrollable || widthTab.length == 1 ? 'auto' : widthViewTabs / content.length
                     }}
                 >
                     <View
