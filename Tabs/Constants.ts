@@ -5,7 +5,10 @@ export const PADDING_POINTER: WidthTab = {
     'secondary': 0
 }
 
-export const MAGRGIN_INDICATOR = 2
+export const MAGRGIN_INDICATOR :WidthTab = {
+    primary: 2,
+    secondary: 0
+}
 
 export const HEIGHT = {
     WITH_ICON: 64,

@@ -21,7 +21,7 @@ export interface TabsProps {
     theme?: MD3Theme
 }
 export type WidthTab = {
-    [Mode in ModeType]?: number
+    [Mode in ModeType]: number
 }
 export interface TabViewProps {
     refScroll: RefObject<ScrollView | null>

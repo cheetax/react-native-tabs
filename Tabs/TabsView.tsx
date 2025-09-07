@@ -38,11 +38,12 @@ const TabView = (props: TabViewProps) => {
     const [iconVisible] = useState<boolean>(typeof content !== 'string')
 
     useEffect(() => {
-        (widthTab.length > 0 && PADDING_POINTER[mode]) && setLeft(leftPadding({ ...props, mode, padding: PADDING_POINTER[mode]}))
-    }, [selectItemTabs, widthTab, widthViewTabs])
+        (widthTab.length > 0) && setLeft(leftPadding({ ...props, mode, padding: PADDING_POINTER[mode]}))        
+    }, [selectItemTabs, widthTab, widthViewTabs, mode])
 
-    useEffect(() => { (scrollable && refScroll && left != undefined) && refScroll.current?.scrollTo({ x: left * 0.5, animated: true }, 200) }, [left])
-
+    useEffect(() => { (scrollable && refScroll && left != undefined) 
+        && refScroll.current?.scrollTo({ x: left * 0.5, animated: true }, 200) }, [left])
+    //console.log(widthTab[selectItemTabs][mode])
     return <View
         style={{
             flexDirection: 'row',
@@ -51,11 +52,11 @@ const TabView = (props: TabViewProps) => {
             display: 'flex'
         }}
     >
-        {(left != undefined && widthTab[selectItemTabs][mode])
+        {(left != undefined && widthTab[selectItemTabs][mode] != undefined)
             && <Animated.View
                 style={{
                     position: 'absolute',
-                    width: widthTab[selectItemTabs][mode] - (mode == 'primary' ? MAGRGIN_INDICATOR * 2 : 0),
+                    width: widthTab[selectItemTabs][mode] - (MAGRGIN_INDICATOR[mode] * 2),
                     left: left,
                     borderTopWidth: mode == 'primary' ? 3 : 2,
                     borderTopColor: theme.colors.primary,

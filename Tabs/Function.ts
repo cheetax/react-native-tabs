@@ -3,7 +3,7 @@ import type { LeftPaddingProps } from "./TabsType"
 
 export const leftPadding = (props: LeftPaddingProps): number => {
     const { scrollable, widthTab, selectItemTabs, widthViewTabs, mode, padding } = props
-    const leftCorrect = mode == 'primary' ? MAGRGIN_INDICATOR : 0
+    const leftCorrect = MAGRGIN_INDICATOR[mode]
     let left: number = padding + leftCorrect
     if (widthTab[selectItemTabs])
         if (widthTab.length > 1 && !scrollable) {
