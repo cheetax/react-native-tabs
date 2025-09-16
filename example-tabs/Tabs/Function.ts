@@ -5,14 +5,13 @@ export const leftPadding = (props: LeftPaddingProps): number => {
     const { scrollable, widthTab, selectItemTabs, widthViewTabs, mode, padding } = props
     const leftCorrect = MAGRGIN_INDICATOR[mode]
     let left: number = padding + leftCorrect
+    //console.log(props, left)
     if (widthTab[selectItemTabs])
-        if (widthTab.length > 1 && !scrollable) {
-            left = ((((widthViewTabs / widthTab.length) - (widthTab[selectItemTabs][mode]) + leftCorrect) / 2)
-                + (selectItemTabs * (widthViewTabs / widthTab.length)))
+        if (widthTab.length > 1) {
+            const paddingLeft = (widthTab[selectItemTabs]['secondary'] - widthTab[selectItemTabs][mode])/2 + leftCorrect
+            left = (widthTab.slice(0, selectItemTabs).reduce((prev, cur) => prev + (cur['secondary']), 0) + paddingLeft)
         }
-        else if (widthTab.length > 1 && scrollable) {
-            left = (widthTab.slice(0, selectItemTabs).reduce((prev, cur) => prev + (cur[mode] - leftCorrect) + padding * 2, 0) + padding)
-        }
+    //console.log(left)
     return left
 }
 export const needToScroll = (leng: number, lengElement: number[], padding: number) =>

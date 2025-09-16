@@ -18,6 +18,7 @@ export interface TabsProps {
     content: ContentType
     onTabPress?: (index: number) => void
     mode?: ModeType
+    duration?: number
     theme?: MD3Theme
 }
 export type WidthTab = {
@@ -34,6 +35,7 @@ export interface TabViewProps {
     scrollable: boolean
     theme: MD3Theme
     mode: ModeType
+    duration?: number
 }
 export interface LeftPaddingProps {
     widthTab: WidthTab[]

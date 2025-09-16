@@ -4,7 +4,7 @@ import { TouchableRipple, Text, Icon } from "react-native-paper"
 import { leftPadding } from "./Function"
 import { TabViewProps } from "./TabsType"
 import { HEIGHT, MAGRGIN_INDICATOR, PADDING_POINTER } from "./Constants"
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
+import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming, WithTimingConfig } from "react-native-reanimated"
 
 type NameProps = {
     color: string
@@ -15,7 +15,7 @@ const Name = (props: NameProps) => <Text
     variant="titleSmall"
     style={{
         color: props.color,
-        alignItems: 'center'
+        alignItems: 'center',
     }}
 >{props.element}</Text>
 
@@ -31,31 +31,45 @@ const TabView = (props: TabViewProps) => {
         widthViewTabs,
         scrollable,
         mode,
+        duration = 300,
         theme } = props
 
-    const left = useSharedValue<number>(0);
+    const left = useSharedValue<number>(leftPadding({ ...props, mode, padding: PADDING_POINTER[mode] }))
+    const width = useSharedValue(widthTab[selectItemTabs][mode])
 
-    const config = {
-        duration: 200,
-    };
+    const [config, setConfig] = useState<WithTimingConfig>({ duration: 0 })
+    const [selectTab, setSelectTab] = useState<number>(selectItemTabs)
 
-    const styleAnimated = useAnimatedStyle(() => {
-        return {
-            left: withTiming(left.value, config),
-        };
-    });
+    const styleAnimated = useAnimatedStyle(() => ({
+        left: withTiming(left.value, config),
+        width: withTiming(width.value - MAGRGIN_INDICATOR[mode] * 2, config)
+    }));
 
-    const [iconVisible] = useState<boolean>(typeof content !== 'string')
+    const [iconVisible] = useState<boolean>(content.every(item => typeof item !== 'string'))
+
+    const coef = () => Math.abs(selectItemTabs - selectTab)
 
     useEffect(() => {
-        if (widthTab.length > 0) left.value = leftPadding({ ...props, mode, padding: PADDING_POINTER[mode] })
+        setTimeout(() => setConfig({ duration }), 100)
+    }, [])
+
+    useEffect(() => {
+        if (widthTab.length > 0) {
+            left.value = leftPadding({ ...props, mode, padding: PADDING_POINTER[mode] })
+            width.value = widthTab[selectItemTabs][mode]
+        }
     }, [selectItemTabs, widthTab, widthViewTabs, mode])
 
     useEffect(() => {
-        (scrollable && refScroll && left != undefined)
-            && refScroll.current?.scrollTo({ x: left.value * 0.5, animated: true }, 200)
-    }, [left])
-    //console.log(widthTab[selectItemTabs][mode])
+        setConfig({ duration: duration * coef() })
+        setSelectTab(selectItemTabs)
+    }, [selectItemTabs])
+
+    const scrollTo = (value: number) => refScroll.current?.scrollTo({ x: value * 0.4, animated: true }, duration * coef())
+
+    useAnimatedReaction(() => left.value, (value, previous) => (scrollable && refScroll && value !== previous)
+        && runOnJS(scrollTo)(value))
+
     return <View
         style={{
             flexDirection: 'row',
@@ -64,20 +78,17 @@ const TabView = (props: TabViewProps) => {
             display: 'flex'
         }}
     >
-        {(left != undefined && widthTab[selectItemTabs][mode] != undefined)
-            && <Animated.View
-                style={[styleAnimated, {
-                    position: 'absolute',
-                    width: widthTab[selectItemTabs][mode] - (MAGRGIN_INDICATOR[mode] * 2),
-                    borderTopWidth: mode == 'primary' ? 3 : 2,
-                    borderTopColor: theme.colors.primary,
-                    borderTopRightRadius: mode == 'primary' ? 20 : 0,
-                    borderTopLeftRadius: mode == 'primary' ? 20 : 0,
-                    bottom: 0
-                }]}
-            />}
+        <Animated.View
+            style={[styleAnimated, {
+                position: 'absolute',
+                borderTopWidth: mode == 'primary' ? 3 : 2,
+                borderTopColor: theme.colors.primary,
+                borderTopRightRadius: mode == 'primary' ? 20 : 0,
+                borderTopLeftRadius: mode == 'primary' ? 20 : 0,
+                bottom: 0
+            }]}
+        />
         {content.map((element, index) => {
-            //console.log(typeof element, element)
             const color = selectItemTabs === index
                 ? theme.colors.primary
                 : theme.colors.onSurfaceVariant
@@ -92,17 +103,13 @@ const TabView = (props: TabViewProps) => {
             >
                 <View
                     style={{
-                        //flexGrow: 1,
-                        //flexShrink: 0,
-                        //flexBasis: '100%',
                         marginHorizontal: scrollable || widthTab.length == 1 ? PADDING_POINTER['primary'] : PADDING_POINTER['secondary'],
                         width: scrollable || widthTab.length == 1 ? 'auto' : widthViewTabs / content.length
                     }}
                 >
                     <View
                         style={{
-                            height: mode == 'primary' && iconVisible ? HEIGHT.WITH_ICON : HEIGHT.NO_ICON,
-                            //height: 48,
+                            height: (mode == 'primary' && iconVisible) ? HEIGHT.WITH_ICON : HEIGHT.NO_ICON,
                             marginHorizontal: 'auto',
                             justifyContent: 'center',
                         }}
