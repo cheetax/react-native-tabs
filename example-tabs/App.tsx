@@ -1,5 +1,5 @@
-import Tabs from './Tabs/Tabs';
-//import Tabs from '@cheetax/react-native-tabs';
+//import Tabs from './Tabs/Tabs';
+import Tabs from '@cheetax/react-native-tabs';
 import { StatusBar } from 'expo-status-bar';
 import { LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
 
