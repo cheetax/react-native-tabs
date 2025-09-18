@@ -4,7 +4,8 @@ import { TouchableRipple, Text, Icon } from "react-native-paper"
 import { leftPadding } from "./Function"
 import { TabViewProps } from "./TabsType"
 import { HEIGHT, MAGRGIN_INDICATOR, PADDING_POINTER } from "./Constants"
-import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming, WithTimingConfig } from "react-native-reanimated"
+import Animated, { useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming, WithTimingConfig } from "react-native-reanimated"
+
 
 type NameProps = {
     color: string
@@ -63,10 +64,10 @@ const TabView = (props: TabViewProps) => {
         setSelectTab(selectItemTabs)
     }, [selectItemTabs])
 
-    const scrollTo = (value: number) => refScroll.current?.scrollTo({ x: value * 0.4, animated: true }, duration)
+    const scrollTo = (value: number) => refScroll.current?.scrollTo({ x: value * 0.4, animated: true })
 
     useAnimatedReaction(() => left.value, (value, previous) => (scrollable && refScroll && value !== previous)
-        && runOnJS(scrollTo)(value))
+       && scrollTo(value))
 
     return <View
         style={{
