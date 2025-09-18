@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { LayoutChangeEvent, ScrollView, View } from "react-native"
 import { useTheme } from "react-native-paper"
 import type { ContentType, ModeType, TabsProps, TabViewProps, WidthTab } from "./TabsType"
 import TabView from "./TabsView"
 import { needToScroll } from "./Function"
+import Animated, { useAnimatedRef } from "react-native-reanimated"
 
 const Tabs = (props: TabsProps) => {
 
-    const ref = useRef<ScrollView>(null)
+    const ref = useAnimatedRef<ScrollView>()
 
     const _theme = useTheme()
     const { onTabPress, mode = 'primary', theme = _theme } = props

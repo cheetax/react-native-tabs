@@ -2,6 +2,7 @@ import { RefObject } from "react";
 import { ScrollView, LayoutChangeEvent } from "react-native";
 import { MD3Theme } from "react-native-paper";
 import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
+import { AnimatedRef } from "react-native-reanimated";
 
 export type ModeType = 'primary' | 'secondary';
 
@@ -25,7 +26,7 @@ export type WidthTab = {
     [Mode in ModeType]: number
 }
 export interface TabViewProps {
-    refScroll: RefObject<ScrollView | null>
+    refScroll: AnimatedRef<ScrollView>
     content: ContentType
     onTabsPress?: (index: number) => void
     onLayoutTab: (props: { event: LayoutChangeEvent; index: number; mode: ModeType }) => void
