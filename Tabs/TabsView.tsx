@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { View } from "react-native"
 import { TouchableRipple, Text, Icon } from "react-native-paper"
 import { leftPadding } from "./Function"
