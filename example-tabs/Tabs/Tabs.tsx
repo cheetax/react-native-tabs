@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { LayoutChangeEvent, ScrollView, View } from "react-native"
 import { useTheme } from "react-native-paper"
 import type { ContentType, ModeType, TabsProps, TabViewProps, WidthTab } from "./TabsType"
